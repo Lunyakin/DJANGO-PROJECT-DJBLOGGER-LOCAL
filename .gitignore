@@ -1,3 +1,6 @@
 venv_blogger/
 db.sqlite3
 .env
+htmlcov/
+.coverage
+__pycache__
