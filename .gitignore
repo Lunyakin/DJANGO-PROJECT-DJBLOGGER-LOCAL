@@ -1,0 +1,3 @@
+venv_blogger/
+db.sqlite3
+.env
