@@ -12,6 +12,6 @@ class TestHomePage:
 
     def test_post_htmx_fragment(self, client):
         headers = {'HTTP_HX-request': 'true'}
-        respons = client.get('/', **headers)
+        response = client.get('/', **headers)
         assertTemplateUsed(response='blog/components/post-list-elements.html')
 
