@@ -1,6 +1,9 @@
+from typing import Any
+from django.db.models.query import QuerySet
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView
 from djblogger.blog.models import Post
+from djblogger.blog.forms import PostSearchForm
 
 
 class HomeView(ListView):
@@ -38,3 +41,21 @@ class TagListView(ListView):
        context = super(TagListView, self).get_context_data(**kwargs)
        context['tag'] = self.kwargs['tag']
        return context
+    
+
+class PostSearchView(ListView):
+    model = Post
+    paginate_by = 10
+    context_object_name = 'posts'
+    form_class = PostSearchForm
+
+    def get_queryset(self):
+        form = self.form_class(self.request.GET)
+        if form.is_valid():
+            return Post.objects.filter(title__icontains=form.cleaned_data['q'])
+        return []
+
+    def get_template_names(self):
+        if self.request.htmx:
+            return 'blog/components/post-list-elements-search.html'
+        return 'blog/search.html'
